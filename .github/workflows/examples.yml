@@ -10,13 +10,13 @@ jobs:
     strategy:
       matrix:
         dir: [
-            express-server,
+            # express-server,
             # next-chat,
             next-prisma-starter,
-            next-prisma-starter-websockets,
-            next-prisma-todomvc,
-            standalone-server,
-            fastify-server,
+            # next-prisma-starter-websockets,
+            # next-prisma-todomvc,
+            # standalone-server,
+            # fastify-server,
           ]
         node-start: ['14.x', '16.x']
         os: [ubuntu-latest]
