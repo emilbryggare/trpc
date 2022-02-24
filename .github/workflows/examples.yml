@@ -19,7 +19,7 @@ jobs:
             # standalone-server,
             # fastify-server,
           ]
-        node-start: ['14.x']
+        node-start: ['14.x', '16.x']
         os: [ubuntu-latest]
     services:
       postgres:
@@ -34,12 +34,24 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: 14.x
-          cache: 'yarn'
-      - run: yarn install
+      - run: node -v
+      - uses: bahmutov/npm-install@v1
+
+      - name: Next.js cache
+        uses: actions/cache@v2
+        with:
+          path: ${{ github.workspace }}${{ matrix.dir }}/.next/cache
+          key: ${{ matrix.dir }}-${{ runner.os }}-${{ matrix.node-start }}-${{ hashFiles('**/yarn.lock') }}-nextjs
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-start }}
+
+      - run: node -v
       - run: yarn playwright install --with-deps
+
       - name: if exists, run yarn lint
         run: cd examples/${{ matrix.dir }} && cat package.json | if grep --silent '"lint"'; then yarn lint; fi
-      - run: yarn --cwd examples/${{ matrix.dir }} install
       - run: yarn --cwd examples/${{ matrix.dir }} build
       - run: yarn --cwd examples/${{ matrix.dir }} test-start
       - run: yarn --cwd examples/${{ matrix.dir }} test-dev
