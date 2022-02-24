@@ -3,6 +3,7 @@ on: [push]
 jobs:
   e2e:
     env:
+      PLAYWRIGHT_BROWSERS_PATH: /usr/lib/playwright
       DATABASE_URL: postgresql://postgres:@localhost:5432/trpcdb
     runs-on: ${{ matrix.os }}
     timeout-minutes: 10
@@ -35,6 +36,7 @@ jobs:
           node-version: 14.x
           cache: 'yarn'
       - run: yarn install
+      - run: yarn add playwright-chromium@1.11.1
       - run: yarn playwright install --with-deps
       - name: if exists, run yarn lint
         run: cd examples/${{ matrix.dir }} && cat package.json | if grep --silent '"lint"'; then yarn lint; fi
