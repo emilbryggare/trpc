@@ -49,7 +49,7 @@ jobs:
       - run: node -v
       - run: |
           yarn --ignore-engines playwright install --with-deps
-          du -hs ~/caches/ms-playwright/*
+          du -hs ~/cache/ms-playwright/*
 
       - name: if exists, run yarn lint
         run: cd examples/${{ matrix.dir }} && cat package.json | if grep --silent '"lint"'; then yarn lint; fi
