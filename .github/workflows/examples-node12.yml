@@ -3,7 +3,7 @@ on: [push]
 jobs:
   e2e-node12:
     env:
-      PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/playwright
+      PLAYWRIGHT_BROWSERS_PATH: /usr/lib/playwright
       DATABASE_URL: postgresql://postgres:@localhost:5432/trpcdb
     runs-on: ${{ matrix.os }}
     timeout-minutes: 10
@@ -25,7 +25,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
-          node-version: ${{ matrix.node-start }}
+          node-version: 14.x
       - run: node -v
       - uses: bahmutov/npm-install@v1
 
