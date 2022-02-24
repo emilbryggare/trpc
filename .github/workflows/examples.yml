@@ -3,6 +3,8 @@ on: [push]
 jobs:
   e2e:
     env:
+    PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1 # Skip downloading during yarn install
+    PLAYWRIGHT_BROWSERS_PATH: 0 # Places binaries to node_modules/@playwright/test
       DATABASE_URL: postgresql://postgres:@localhost:5432/trpcdb
     runs-on: ${{ matrix.os }}
     timeout-minutes: 10
@@ -47,9 +49,7 @@ jobs:
           node-version: ${{ matrix.node-start }}
 
       - run: node -v
-      - run: |
-          yarn --ignore-engines playwright install --with-deps
-          du -hs ~/cache/ms-playwright/*
+      - run: yarn playwright install --with-deps
 
       - name: if exists, run yarn lint
         run: cd examples/${{ matrix.dir }} && cat package.json | if grep --silent '"lint"'; then yarn lint; fi
