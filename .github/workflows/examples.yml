@@ -44,12 +44,13 @@ jobs:
           path: ${{ github.workspace }}${{ matrix.dir }}/.next/cache
           key: ${{ matrix.dir }}-${{ runner.os }}-${{ matrix.node-start }}-${{ hashFiles('**/yarn.lock') }}-nextjs
 
+      - run: yarn playwright install --with-deps
+
       - uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-start }}
 
       - run: node -v
-      - run: yarn playwright install --with-deps
 
       - name: if exists, run yarn lint
         run: cd examples/${{ matrix.dir }} && cat package.json | if grep --silent '"lint"'; then yarn lint; fi
